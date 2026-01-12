@@ -8,8 +8,8 @@ from config.swagger import schema_view
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/auth/", include("users.urls")),
-    # path("api/", include("products.urls")),
-    # path("api/", include("categories.urls")),
+    path("api/", include("categories.urls")),
+    path("api/", include("products.urls")),
     # path("api/", include("comments.urls")),
     # path("api/cart/", include("cart.urls")),
     # path("api/orders/", include("orders.urls")),
