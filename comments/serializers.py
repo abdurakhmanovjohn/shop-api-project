@@ -15,4 +15,4 @@ class CommentSerializer(serializers.ModelSerializer):
       'text',
       'created_at'
     )
-    read_only_fields = ('user', 'created_at')
+    read_only_fields = ('created_at')

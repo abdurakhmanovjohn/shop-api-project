@@ -16,7 +16,8 @@ from .serializers import (
   ProfileCreateSerializer,
   ProfileUpdateSerializer,
   ProfileSerializer,
-  EmailTokenObtainPairSerializer,
+  # EmailTokenObtainPairSerializer,
+  EmailOrUsernameTokenObtainPairSerializer,
 )
 
 
@@ -125,7 +126,7 @@ class ProfileView(RetrieveAPIView):
 
 
 class LoginView(TokenObtainPairView):
-  serializer_class = EmailTokenObtainPairSerializer
+  serializer_class = EmailOrUsernameTokenObtainPairSerializer
 
 
 class LogoutView(APIView):

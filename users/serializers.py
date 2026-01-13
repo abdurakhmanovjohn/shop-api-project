@@ -71,16 +71,49 @@ class ProfileSerializer(serializers.ModelSerializer):
     fields = ('id', 'email', 'username', 'full_name', 'avatar')
 
 
-class EmailTokenObtainPairSerializer(TokenObtainPairSerializer):
-  username_field = 'email'
+# class EmailTokenObtainPairSerializer(TokenObtainPairSerializer):
+#   username_field = 'email'
+
+#   def validate(self, attrs):
+#     data = super().validate(attrs)
+
+#     if not self.user.is_email_verified:
+#       raise serializers.ValidationError("Email not verified")
+
+#     if not self.user.has_usable_password():
+#       raise serializers.ValidationError("Profile not completed")
+
+#     return data
+
+class EmailOrUsernameTokenObtainPairSerializer(TokenObtainPairSerializer):
+  username_field = "email"
 
   def validate(self, attrs):
-    data = super().validate(attrs)
+    identifier = attrs.get("email")
+    password = attrs.get("password")
 
-    if not self.user.is_email_verified:
+    if not identifier or not password:
+      raise serializers.ValidationError(
+        "Email or username and password are required"
+      )
+
+    try:
+      user = User.objects.get(email=identifier)
+    except User.DoesNotExist:
+      try:
+        user = User.objects.get(username=identifier)
+      except User.DoesNotExist:
+        raise serializers.ValidationError("Invalid credentials")
+
+    if not user.check_password(password):
+      raise serializers.ValidationError("Invalid credentials")
+
+    if not user.is_email_verified:
       raise serializers.ValidationError("Email not verified")
 
-    if not self.user.has_usable_password():
-      raise serializers.ValidationError("Profile not completed")
+    refresh = self.get_token(user)
 
-    return data
+    return {
+      "refresh": str(refresh),
+      "access": str(refresh.access_token),
+    }
