@@ -11,7 +11,7 @@ urlpatterns = [
     path("api/", include("categories.urls")),
     path("api/", include("comments.urls")),
     path("api/", include("products.urls")),
-    # path("api/cart/", include("cart.urls")),
+    path("api/", include("cart.urls")),
     # path("api/orders/", include("orders.urls")),
     path("swagger/", schema_view.with_ui("swagger", cache_timeout=0)),
     path("redoc/", schema_view.with_ui("redoc", cache_timeout=0)),
