@@ -8,7 +8,6 @@ from rest_framework.generics import RetrieveAPIView
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated, AllowAny
-
 from .models import CustomUser, EmailVerification
 from .serializers import (
   RegisterSerializer,
@@ -68,15 +67,6 @@ class VerifyEmailView(APIView):
     verification.delete()
 
     return Response({"detail": "Email verified"})
-
-
-from rest_framework.permissions import AllowAny
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-
-from .models import EmailVerification
-from .serializers import ProfileCreateSerializer
 
 
 class ProfileCreateView(APIView):
